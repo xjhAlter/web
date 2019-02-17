@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+</head>
+<body>
+<button id="test">点击</button>
+<div id="myDiv"></div>
+<form action="xjh.red" method="GET">
+    <h3>get</h3>
+    <label>id：</label><input type="text" name="id">
+    <input type="submit" value="提交" />
+</form>
+<form action="xjh.do" method="POST">
+    <h3>post</h3>
+    <label>id：</label><input type="text" name="id">
+    <input type="submit" value="提交" />
+</form>
+<script>
+    var Xhr = new XMLHttpRequest();
+    document.getElementById("test").onclick = function () {
+
+        Xhr.onreadystatechange = function() {
+            if (Xhr.readyState==4 && Xhr.status==200) {
+                //返回的信息
+                document.getElementById("myDiv").innerHTML=Xhr.responseText;
+            }
+        };
+        Xhr.open('GET','x.do?id=015',true);
+        Xhr.send();
+    };
+</script>
+</body>
+</html>

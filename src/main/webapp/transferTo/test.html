@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>测试中...</title>
+    <script type="text/javascript" src="../js/lib/jquery_3.3.1_jquery.js"></script>
+    <script src="../js/lib/vue.js"></script>
+    <style>
+        body {
+            background-color: #e7f9e0;
+        }
+
+        ul, ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #canvas {
+            /*canvas默认绘画表面大小300*150*/
+            width: 150px;
+            height: 75px;
+            /*background-color: white;*/
+        }
+
+        .clock {
+            margin: 10px;
+            display: inline;
+        }
+
+        .time-label {
+            position: relative;
+            bottom: 25px;
+            font-size: 40px;
+            font-family: 华文琥珀;
+        }
+
+        #carousel {
+            width: 500px;
+            height: 300px;
+            overflow: hidden;
+            margin: 20px auto;
+            position:relative;
+        }
+
+        .switch span{
+            position: absolute;
+            width: 50px;
+            height:50px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 30px;
+            background-color: rgba(0,0,0,.1);
+            color: #fff;
+            top:50%;
+            margin-top:-25px;
+            cursor: pointer;
+        }
+
+        .switch span:hover {
+            background-color: #333333;
+        }
+
+        .last {
+            left: 0;
+        }
+
+        .next {
+            right: 0;
+        }
+
+        .bullet {
+            font-size: 0;
+            position: absolute;
+            bottom:10px;
+            left:50%;
+            transform: translateX(-50%);
+            /*margin-left: -42px;*/
+        }
+
+        .bullet span{
+            display: inline-block;
+            width:15px;
+            height:15px;
+            border-radius: 10px;
+            margin-left: 15px;
+            background-color: #b5dedb;
+        }
+
+        .bullet span:first-child {
+            margin-left: 0;
+        }
+
+        span.active {
+            background-color: #de2528;
+        }
+
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="clock">
+    <label id="time" class="time-label">00:00:00</label>
+    <input type="button" id="start" value="start"/>
+    <input type="button" id="stop" value="stop"/>
+</div>
+<progress max=100 value=40></progress>
+<form method="get" action="register.html">
+    <input type="text" name="test"/>
+    <input type="submit" value="submit"/>
+</form>
+<!--不使用border画一条高1px的线-->
+<div style="height:1px; overflow:hidden; background:red"></div>
+
+<div id="carousel" @mouseenter="enter" @mouseleave="leave">
+    <ul>
+        <li v-for="(img,index) in images" v-show="index == mark" :key="index">
+            <img :src="img">
+        </li>
+    </ul>
+    <div class="switch">
+        <span class="last" @click="last">&lt;</span>
+        <span class="next" @click="next">&gt;</span>
+    </div>
+    <div class="bullet">
+        <span v-for="(item,index) in images.length" :key="index" @click="change(index)" :class="{'active':index==mark}"></span>
+    </div>
+</div>
+
+
+
+<script>
+
+    // function foo(x) {
+    //     var tmp = 3;
+    //     return function (y) {
+    //         alert(x + y + (++tmp));
+    //         // alert(y);
+    //     }
+    // }
+    // var bar = foo(2); // bar 现在是一个闭包
+    // bar(10);//16  2+10+4  这里的参数是y
+    // alert(1<2<3); //true
+
+    var x = {b:1};
+    console.log(x["b"]);
+
+
+    console.log(Object.prototype.toString.call({a:1}));
+    console.log({a:1}.toString());
+
+    var carousel = new Vue({
+       el:"#carousel",
+       data:{
+           mark:0,
+           images:[
+               '../images/carousel/img1.jpg',
+               '../images/carousel/img2.jpg',
+               '../images/carousel/img3.jpg',
+               '../images/carousel/img4.jpg',
+               '../images/carousel/img5.jpg'
+           ],
+           time:null
+       },
+       methods:{
+           change:function (i) {
+               this.mark = i;
+           },
+           last:function () {
+               if(--this.mark < 0){
+                   this.mark = this.images.length - 1;
+               }
+           },
+           next:function () {
+               if(++this.mark >= this.images.length){
+                   this.mark = 0;
+               }
+           },
+           play:function () {
+               this.time = setInterval(this.next,3000);
+           },
+           enter:function () {
+               clearInterval(this.time);
+           },
+           leave:function () {
+               this.play();
+           }
+       },
+        created(){
+            this.play();
+        }
+    });
+
+    $(document).ready(function () {
+        //画布canvas
+        var canvas=document.getElementById("canvas");
+        var cxt=canvas.getContext('2d');
+        cxt.lineWidth=2;
+        cxt.strokeStyle="blue";
+        draw(cxt,0,10,300,10);
+        draw(cxt,0,20,300,20);
+        draw(cxt,0,130,300,130);
+        draw(cxt,0,140,300,140);
+        cxt.font = '38pt Arial';
+        cxt.fillStyle = 'cornflowerblue';
+        cxt.fillText("  Vue  ", canvas.width/2 - 150, canvas.height/2 + 15);
+        cxt.strokeText("  Vue  ", canvas.width/2 - 150, canvas.height/2 + 15);
+        function draw(cxt,startx,starty,endx,endy){
+            cxt.beginPath();
+            cxt.moveTo(startx,starty);
+            cxt.lineTo(endx,endy);
+            cxt.stroke();
+            cxt.closePath();
+        }
+        //画布canvas-end
+
+        //时钟
+        var attime;
+        function clock(){
+            var time=new Date();
+            var second = time.getSeconds();
+            var minute = time.getMinutes();
+            var hour = time.getHours();
+            if(second < 10){
+                second = "0" + second;
+            }
+            if(minute < 10){
+                minute = "0" + minute;
+            }
+            if(hour < 10){
+                hour = "0" + hour;
+            }
+            attime = hour + ":"+ minute + ":" + second;
+            document.getElementById("time").innerHTML = attime;
+        }
+        var n = setInterval(clock,1000);
+        document.getElementById("start").onclick = function () {
+            clearInterval(n);
+            n = setInterval(clock,1000);
+        };
+        document.getElementById("stop").onclick = function(){
+            clearInterval(n);
+        };
+        //时钟-end
+
+    });
+</script>
+</body>
+</html>

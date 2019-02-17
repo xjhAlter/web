@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>html5</title>
+    <script src="../js/lib/jquery_3.3.1_jquery.js"></script>
+    <style>
+        p {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4cae4c;
+        }
+        .div1,.div2 {
+            width: 200px;
+            height: 60px;
+            border: 1px solid #98A6AD;
+            margin: 0 10px;
+            display: inline-block;
+        }
+        #things{
+            width: 40px;
+            height: 40px;
+            background-color: #005ceb;
+            margin: 5px auto;
+        }
+    </style>
+</head>
+<body ondrop="drop(event)" ondragover="allowDrop(event)">
+<div id="div-drag">
+    <p>拖放</p>
+    <div class="div1" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <div id="things" draggable="true" ondragstart="drag(event)"></div>
+    </div>
+    <div class="div2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+</div>
+<div id="div-svg">
+    <p>svg</p>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="190">
+        <polygon points="100,0 195,69 159,181 41,181 5,69"
+                 style="fill:red;stroke:blue;stroke-width:1px;fill-rule:evenodd;" ></polygon>
+    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" height="190">
+        <polygon points="100,0 159,181 5,69 195,69 41,181"
+                 style="fill:red;stroke:blue;stroke-width:1px;fill-rule:evenodd;" ></polygon>
+    </svg>
+</div>
+<div id="div-storage">
+    <p>storage</p>
+    <span>localStorage 方法存储的数据没有时间限制。第二天、第二周或下一年之后，数据依然可用。</span>
+    <span id="local"></span><br>
+    <span>sessionStorage 方法针对一个 session 进行数据存储。当用户关闭浏览器窗口后，数据会被删除。</span>
+    <span id="session"></span>
+</div>
+<div id="div-input">
+    <p>Input</p>
+    <form>
+        <label for="email">Email:</label>
+        <input type="email" id="email"><br>
+        <label for="url">URL:</label>
+        <input type="url" id="url"><br>
+        <label for="number">Number:</label>
+        <input type="number" id="number"><br>
+        <label for="range">Range:</label>
+        <input type="range" id="range"><br>
+        <label for="date">Date:</label>
+        <input type="date" id="date"><br>
+        <label for="color">Color:</label>
+        <input type="color" id="color"><br>
+        <label for="input-list">DataList:</label>
+        <input type="text" list="list" id="input-list">
+        <datalist id="list">
+            <option value="第一个" label="1"></option>
+            <option value="第二个" label="2"></option>
+            <option value="第三个" label="3"></option>
+        </datalist><br>
+        <input type="submit" value="submit">
+    </form>
+</div>
+<h1>dd</h1>
+<h2>dd</h2>
+<h3>dd</h3>
+<script>
+    //drag
+    function allowDrop(ev) {
+        ev.preventDefault();
+    }
+
+    function drag(ev) {
+        ev.dataTransfer.setData("Text",ev.target.id);
+    }
+
+    function drop(ev) {
+        ev.preventDefault();
+        var data=ev.dataTransfer.getData("Text"); //获得被拖的数据
+        ev.target.appendChild(document.getElementById(data));
+    }
+    //drag -end
+
+    //storage
+    if (localStorage.pagecount) {
+        localStorage.pagecount=Number(localStorage.pagecount) +1;
+    }
+    else {
+        localStorage.pagecount=1;
+    }
+    $("#local").text("Visits "+ localStorage.pagecount + " time(s).");
+
+    if (sessionStorage.pagecount) {
+        sessionStorage.pagecount=Number(sessionStorage.pagecount) +1;
+    }
+    else {
+        sessionStorage.pagecount=1;
+    }
+    $("#session").text("Visits "+sessionStorage.pagecount+" time(s) this session.");
+    //storage -end
+</script>
+</body>
+</html>

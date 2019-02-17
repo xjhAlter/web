@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>分页</title>
+    <script type="text/javascript" src="../js/lib/jquery_3.3.1_jquery.js"></script>
+    <style>
+        .center {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        .pagination {
+            list-style: none;
+        }
+
+        .pagination li {
+            display:inline;
+            font-size: 14px;
+            padding: 5px 20px;
+            border: #333333 solid 1px;
+            margin: 0 1px;
+            border-radius: 6px;
+            background-color: white;
+        }
+
+        .pagination li:hover {
+            background-color: #a4dedd;
+        }
+
+        .pagination li.active {
+            color: white;
+            background-color: #5bc0de;
+        }
+
+        .pagination li.disabled {
+            cursor: not-allowed;
+        }
+
+        .pagination li.totalPage {
+            background: transparent;
+            cursor: default;
+            border: none;
+            padding: 0 6px;
+        }
+
+        .pagination li.totalPage:hover {
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+<ul class="pagination" id="pagination"></ul>
+</div>
+<script>
+    $(document).ready(function () {
+
+        function pagination(_ref) {
+            var curPage = _ref.curPage;
+            var pageSize = _ref.pageSize;
+            var totalPages = _ref.totalPages;
+            var id = _ref.id;
+
+            this.curPage = curPage || 1; //初始页码
+            this.pageSize = pageSize || 5; //分页个数
+            this.totalPages = totalPages; //总共多少页
+            this.id = id; //id
+            this.init();
+        }
+
+        // 给实例对象添加公共属性和方法
+        pagination.prototype = {
+            init: function init() {
+                $("#"+this.id).html("");
+                //首页
+                this.firstPage();
+                //上一页
+                this.lastPage();
+                //分页
+                this.getPages();
+                //下一页
+                this.nextPage();
+                //尾页
+                this.finalPage();
+                //显示总页数
+                this.showPageTotal();
+            },
+            firstPage: function firstPage() {
+                var page = this;
+                var $li = $("<li>首页</li>");
+                $("#" + page.id).append($li);
+                $li.bind("click",function () {
+                    page.curPage=1;
+                    page.init();
+                });
+            },
+            lastPage: function lastPage() {
+                var page = this;
+                var $li = $("<li>&lt;</li>");
+                $("#" + page.id).append($li);
+                if(page.curPage > 1){
+                    $li.bind("click",function () {
+                        page.curPage--;
+                        page.init();
+                    });
+                }else {
+                    $li.addClass("disabled");
+                }
+            },
+            getPages: function getPages() {
+                var page = this;
+                var start = page.curPage - Math.floor(page.pageSize / 2);
+                if(start < 1){
+                    start = 1;
+                }else if((start + page.pageSize) > page.totalPages){
+                    start = start - ((start + page.pageSize) - page.totalPages - 1);
+                }
+                for(var i = start; i < (start + page.pageSize); i++) {
+                    var $li = $("<li>" + i + "</li>");
+                    $("#" + page.id).append($li);
+                    if(i == page.curPage){
+                        $li.addClass("active");
+                    }
+                    $li.bind("click",{index:i,page:page},page.clickHandler);
+                }
+            },
+            clickHandler: function clickHandler(event){
+                var page = event.data.page;
+                page.curPage= event.data.index;
+                page.init();
+            },
+            nextPage: function nextPage() {
+                var page = this;
+                var $li = $("<li>&gt;</li>");
+                $("#" + page.id).append($li);
+                if(page.curPage < page.totalPages){
+                    $li.bind("click",function () {
+                        page.curPage++;
+                        page.init();
+                    });
+                }else {
+                    $li.addClass("disabled");
+                }
+            },
+            finalPage: function finalPage() {
+                var page = this;
+                var $li = $("<li>尾页</li>");
+                $("#" + page.id).append($li);
+                $li.bind("click",function () {
+                    page.curPage=page.totalPages;
+                    page.init();
+                });
+            },
+            showPageTotal: function showPageTotal() {
+                var page = this;
+                var $li = $("<li>共" + page.totalPages + "页</li>");
+                $li.addClass("totalPage");
+                $("#" + page.id).append($li);
+            }
+        };
+
+        new pagination({
+            id: 'pagination',
+            curPage: 1, //初始页码
+            pageSize: 5, //分页数
+            totalPages: 50 //总页数
+        });
+    });
+</script>
+</body>
+</html>

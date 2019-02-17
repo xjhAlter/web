@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>this</title>
+</head>
+<body>
+<script>
+    // var a = 20;
+    // var obj = {
+    //     a: 10,
+    //     c: this.a + 20,
+    //     /*单独的{}是不会形成新的作用域的，
+    //     因此这里的this.a，由于并没有作用域的限制，所以它仍然处于全局作用域之中。
+    //     所以这里的this其实是指向的window对象。
+    //     * */
+    //     fn: function () {
+    //         return this.a;
+    //     }
+    // };
+    //
+    // console.log(obj.c);//40
+    // console.log(obj.fn());//10
+    //
+    // // 为了能够准确判断，我们在函数内部使用严格模式，因为非严格模式会自动指向全局
+    // function fn() {
+    //     'use strict';
+    //     console.log(this);
+    // }
+    //
+    // fn();  // fn是调用者，独立调用(没有被哪个对象所拥有）
+    // window.fn();  // fn是调用者，被window所拥有
+
+    function foo() {
+        console.log(this.a)
+    }
+
+    function active(fn) {
+        fn(); // 真实调用者，为独立调用  20
+    }
+
+    var a = 20;
+    var obj = {
+        a: 10,
+        getA: foo
+    };
+
+    active(obj.getA);  //只是把引用当作参数，并非被obj拥有？？？
+
+    function exam(a, b, c, d, e) {
+
+        // 先看看函数的自带属性 arguments 什么是样子的
+        console.log(arguments);  //对象
+
+        // 使用call/apply将arguments转换为数组, 返回结果为数组，arguments自身不会改变
+        var arg = [].slice.call(arguments);  //数组
+
+        console.log(arg);
+    }
+
+    exam(2, 8, 9, 10, 3);
+
+
+    var name='Alter';
+    var obj2 = {name:'Dio'};
+    function Person(name, age) {
+        // 这里的this指向了谁? 指向实例对象p1
+        this.name = name;
+        this.age = age;
+    }
+
+    Person.prototype.getName = function() {
+        // 这里的this又指向了谁？  指向调用者所在的对象
+        return this.name;
+    };
+
+    // 上面的2个this，是同一个吗，他们是否指向了原型对象？
+
+    var p1 = new Person('Nick', 20);
+    console.log(p1.getName()); //this指向p1
+    console.log(p1.getName.call(window));//this指向window
+    console.log(p1.getName.call(obj2));//this指向obj2
+
+
+
+</script>
+</body>
+</html>

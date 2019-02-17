@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery</title>
+    <script src="../js/lib/jquery_3.3.1_jquery.js"></script>
+    <style>
+        .ol-1 {
+            border: 1px solid black;
+        }
+        .even {
+            background-color: lightblue;
+        }
+        .odd {
+            background-color: lightpink;
+        }
+        .first {
+            background-color: lightseagreen;
+        }
+        .last {
+            background-color: lime;
+        }
+        .hasa {
+            background-color: yellow;
+        }
+        .has-class{
+            background-color: palevioletred;
+        }
+
+
+        .pop {
+            width:400px;
+            height:150px;
+            background-color: lightgreen;
+            color: white;
+            font-size: 30px;
+            font-weight: bold;
+            position: fixed;
+            left: 50%;
+            top: 25%;
+            transform: translate(-50%,-25%);
+            border-radius: 25px;
+        }
+
+        .pop div {
+            text-align: center;
+            line-height: 150px;
+        }
+
+        .pop span {
+            position: absolute;
+            top: 0;
+            right: 5px;
+            line-height: 30px;
+        }
+
+        .pop span:hover{
+            color: firebrick;
+        }
+
+        .animate-div {
+            width: 100px;
+            height: 100px;
+            border-left: 1px solid red;
+            border-top: 1px solid blue;
+            border-right: 1px solid yellow;
+            border-bottom: 1px solid green;
+        }
+
+    </style>
+</head>
+<body>
+<ol class="ol-1">
+    <li>1</li>
+    <li>2</li>
+    <li><a></a>3</li>
+    <li>4</li>
+    <li>5</li>
+    <li>6<a></a><a class="has"></a></li>
+    <li>7</li>
+    <li>8</li>
+    <li>9</li>
+</ol>
+<div class="pop" id="drag">
+    <div>请关闭弹窗</div>
+    <span>x</span>
+</div>
+<div class="animate-div"></div>
+<script>
+    $(document).ready(function () {
+        $(".ol-1 li:even").addClass("even");
+        $(".ol-1 li:odd").addClass("odd");
+        $(".ol-1 li:first").addClass("first");
+        $(".ol-1 li:last").addClass("last");
+        $(".ol-1 li:has(a)").addClass("hasa");
+        $(".ol-1 li:has('.has')").addClass("has-class");
+        $(".ol-1").append("<h3>append的元素</h3>");
+        $(".ol-1").prepend("<h3>prepend的元素</h3>");
+        $(".ol-1").before("<h3>before的元素</h3>");
+        $(".ol-1").after("<h3>after的元素</h3>");
+        $(".ol-1 h3").css("color","red");
+
+        $(".ol-1 li:has('.has')").mouseover(function () {
+            $(this).append("<p>over over</p>");
+            $(this).off('mouseover');
+        });
+
+        $(".ol-1 li").each(function () {
+           // this 指向被点击的元素
+           $(this).click(function () {
+               $(this).hide();
+           });
+        });
+
+        $(".pop span").click(function () {
+           $(".pop").remove();
+        });
+
+        $(".animate-div").animate(
+            {
+                width:'0px',
+                height:'0px',
+                borderLeftWidth: '50px',
+                borderTopWidth: '50px',
+                borderRightWidth: '50px',
+                borderBottomWidth: '50px'
+            },
+            2000
+        );
+    })
+
+
+    //drag
+    ;
+    (function() {
+        // 这是一个私有属性，不需要被实例访问
+        var transform = getTransform();
+
+        function Drag(selector) {
+            // 放在构造函数中的属性，都是属于每一个实例单独拥有
+            this.elem = typeof selector == 'Object' ? selector : document.getElementById(selector);
+            this.startX = 0;
+            this.startY = 0;
+            this.sourceX = 0;
+            this.sourceY = 0;
+
+            this.init();
+        }
+
+
+        // 原型
+        Drag.prototype = {
+            constructor: Drag,
+
+            init: function() {
+                // 初始时需要做些什么事情
+                this.setDrag();
+            },
+
+            // 稍作改造，仅用于获取当前元素的属性，类似于getName
+            getStyle: function(property) {
+                return document.defaultView.getComputedStyle ? document.defaultView.getComputedStyle(this.elem, false)[property] : this.elem.currentStyle[property];
+            },
+
+            // 用来获取当前元素的位置信息，注意与之前的不同之处
+            getPosition: function() {
+                var pos = {x: 0, y: 0};
+                if(transform) {
+                    var transformValue = this.getStyle(transform);
+                    if(transformValue == 'none') {
+                        this.elem.style[transform] = 'translate(0, 0)';
+                    } else {
+                        var temp = transformValue.match(/-?\d+/g);
+                        pos = {
+                            x: parseInt(temp[4].trim()),
+                            y: parseInt(temp[5].trim())
+                        }
+                    }
+                } else {
+                    if(this.getStyle('position') == 'static') {
+                        this.elem.style.position = 'relative';
+                    } else {
+                        pos = {
+                            x: parseInt(this.getStyle('left') ? this.getStyle('left') : 0),
+                            y: parseInt(this.getStyle('top') ? this.getStyle('top') : 0)
+                        }
+                    }
+                }
+
+                return pos;
+            },
+
+            // 用来设置当前元素的位置
+            setPostion: function(pos) {
+                if(transform) {
+                    this.elem.style[transform] = 'translate('+ pos.x +'px, '+ pos.y +'px)';
+                } else {
+                    this.elem.style.left = pos.x + 'px';
+                    this.elem.style.top = pos.y + 'px';
+                }
+            },
+
+            // 该方法用来绑定事件
+            setDrag: function() {
+                var self = this;
+                this.elem.addEventListener('mousedown', start, false);
+                function start(event) {
+                    self.startX = event.pageX;
+                    self.startY = event.pageY;
+
+                    var pos = self.getPosition();
+
+                    self.sourceX = pos.x;
+                    self.sourceY = pos.y;
+
+                    document.addEventListener('mousemove', move, false);
+                    document.addEventListener('mouseup', end, false);
+                }
+
+                function move(event) {
+                    var currentX = event.pageX;
+                    var currentY = event.pageY;
+
+                    var distanceX = currentX - self.startX;
+                    var distanceY = currentY - self.startY;
+
+                    self.setPostion({
+                        x: (self.sourceX + distanceX).toFixed(),
+                        y: (self.sourceY + distanceY).toFixed()
+                    })
+                }
+
+                function end(event) {
+                    document.removeEventListener('mousemove', move);
+                    document.removeEventListener('mouseup', end);
+                    // do other things
+                }
+            }
+        }
+
+        // 私有方法，仅仅用来获取transform的兼容写法
+        function getTransform() {
+            var transform = '',
+                divStyle = document.createElement('div').style,
+                transformArr = ['transform', 'webkitTransform', 'MozTransform', 'msTransform', 'OTransform'],
+
+                i = 0,
+                len = transformArr.length;
+
+            for(; i < len; i++)  {
+                if(transformArr[i] in divStyle) {
+                    return transform = transformArr[i];
+                }
+            }
+
+            return transform;
+        }
+
+        // 一种对外暴露的方式
+        window.Drag = Drag;
+    })();
+    new Drag("drag");
+    //drag-end
+</script>
+</body>
+</html>

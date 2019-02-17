@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>礼装</title>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/navigation.css" rel="stylesheet">
+    <script src="js/lib/jquery_3.3.1_jquery.js"></script>
+    <script src="js/lib/vue.js"></script>
+    <style>
+        ol,ul {
+            list-style-type: none;
+        }
+
+        .mystic-table {
+            /*text-align: center;*/
+            background-color: white;
+        }
+
+        th {
+            height: 30px;
+            background-color: #a5b3ba;
+        }
+
+        th,td{
+            font-size: 15px;
+            text-align: center;
+            min-width: 50px;
+            max-width: 120px;
+            border: 1px solid #98A6AD;
+        }
+
+        td img {
+            width: 80%;
+            margin: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<!--<ul class="top-bar">-->
+<!--<li><a href="login.html">登录</a></li>-->
+<!--<li><a href="register.html">注册</a></li>-->
+<!--</ul>-->
+<ul class="left-bar">
+    <li><img src="images/Chaldea-small.png" class="img-responsive center-block img-rounded" title="Chaldea" alt="迦勒底"></li>
+    <li><a href="index.html">首页</a></li>
+    <li><a href="servant.html">英灵</a></li>
+    <li><a class="active" href="mystic.html">礼装</a></li>
+    <li><a href="transfer.html">转移</a></li>
+    <li><a href="about.html">关于</a></li>
+</ul>
+<div class="container">
+    <h1><strong>迦勒底礼装展览室</strong></h1>
+    <!--<ul>-->
+    <!--<li v-for="(item,index) in mysticList" :key="index" @click="getDetails(item.id)" class="img-list">-->
+    <!--<img :src="getImage" >-->
+    <!--<span class="img-name">{{item.name}}</span>-->
+    <!--</li>-->
+    <!--</ul>-->
+
+    <table class="mystic-table">
+        <tr>
+            <th><span>编号</span></th>
+            <th><span>缩略图</span></th>
+            <th><span>名称</span></th>
+        </tr>
+        <tr v-for="(item,index) in mysticList" :key="index">
+            <td><span>{{item.id}}</span></td>
+            <td><a :href="getHref(item.id)">
+                <img :src="getImage(item.id)">
+            </a></td>
+            <td><a :href="getHref(item.id)">{{item.name}}</a></td>
+        </tr>
+    </table>
+    <!--<mystics-->
+    <!--v-for="(item,index) in mysticList"-->
+    <!--v-bind:mystic="item"-->
+    <!--v-bind:index="index"-->
+    <!--@click="getDetails(index)"-->
+    <!--&gt;-->
+    <!--</mystics>-->
+</div>
+<script>
+    // Vue.component('mystics', {
+    //     props: ['mystic','index'],
+    //     template: '<li>{{mystic}}</li>'
+    // });
+
+    var mystic = new Vue({
+        el:".container",
+        data:{
+            mysticList:[
+                {id:"001",name:"顽强"},
+                {id:"002",name:"冥想"},
+                {id:"003",name:"技巧"},
+                {id:"004",name:"先制"},
+                {id:"005",name:"破坏"}
+            ],
+            path:"images/mystic-small/"
+        },
+        methods:{
+            getImage:function (id) {
+                return this.path + id + ".jpg";
+            },
+            getHref:function(id){
+                return "mystic_details.html?id="+id;
+            }
+        },
+        computed:{
+        }
+    });
+</script>
+</body>
+</html>

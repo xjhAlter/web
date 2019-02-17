@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>经典题目</title>
+    <style>
+        pre{
+            padding: 10px;
+            font-size: 18px;
+            background-color: #c1cfd6;
+            border-radius: 20px;
+        }
+        pre::selection{
+            color: lightgreen;
+            background-color: black;
+        }
+        .line{
+            height:1px;
+            overflow:hidden;
+            background-color: black;
+        }
+        .pre-title{
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<pre>
+    function a(xx) {
+        this.x=xx;
+        return this;
+    }
+    var x=a(5);
+    //运行后
+    // x = window; window.x = window; y = undefined;
+    var y=a(6);
+    //运行后
+    // x = 6;   y = window;  window.x = 6;
+    console.log(x.x);//undefined
+    console.log(y.x);//6
+    //相当于执行了
+    // console.log((6).x);    // undefined
+    // console.log(window.x); // 6
+</pre>
+<div class="line"></div>
+<pre>
+    function Foo() {
+        getName = function(){
+            console.log(1);
+        };
+        return this;
+    }
+    Foo.getName = function () {  //Foo的属性，不是Foo的方法,Foo的getName属性指向一个匿名函数
+        console.log(2);
+    };
+    Foo.prototype.getName = function () {   //这才是定义Foo的方法
+        // console.log('baidu' &amp;&amp; 'google');
+        console.log(3);
+    };
+    var getName = function () {
+        console.log(4);
+    };
+    function getName() {
+        console.log(5);
+    }
+    Foo.getName(); //2
+    getName();  //4
+    Foo().getName(); //1
+    getName();  //1
+    new Foo.getName();  //2  相当于 new (Foo.getName()); 先执行了Foo.getName()再new   [通过new 来返回一个Foo.getName的实例,即构造函数是Foo.getName]
+    new Foo().getName();  //3 相当于 (new Foo()).getName();  先创建实例再调用实例的getName()
+    new new Foo().getName(); //3 相当于 new ((new Foo()).getName());
+    //优先级 new Foo() &gt; Foo() &gt; new Foo
+</pre>
+<div class="line"></div>
+<pre>
+    <span class="pre-title">深度克隆</span>
+    function deepClone(obj){
+        var result,oClass=isClass(obj);
+        //确定result的类型
+        if(oClass==="Object"){
+            result={};
+        }else if(oClass==="Array"){
+            result=[];
+        }else{
+            return obj;
+        }
+        for(key in obj){
+            var copy=obj[key];
+            if(isClass(copy)=="Object"){
+                result[key]=arguments.callee(copy);//递归调用
+            }else if(isClass(copy)=="Array"){
+                result[key]=arguments.callee(copy);
+            }else{
+                result[key]=obj[key];
+            }
+        }
+        return result;
+    }
+    //返回传递给他的任意对象的类
+    function isClass(o){
+        if(o===null) return "Null";
+        if(o===undefined) return "Undefined";
+        return Object.prototype.toString.call(o).slice(8,-1);
+    }
+    var oPerson={
+        oName:"rookiebob",
+        oAge:"18",
+        oAddress:{
+            province:"beijing"
+        },
+        ofavorite:[
+            "swimming",
+            {reading:"history book"}
+        ],
+        skill:function(){
+            console.log("bob is coding");
+        }
+    };
+    //深度克隆一个对象
+    var oNew=deepClone(oPerson);
+
+    oNew.ofavorite[1].reading="picture";
+    console.log(oNew.ofavorite[1].reading);//picture
+    console.log(oPerson.ofavorite[1].reading);//history book
+
+    oNew.oAddress.province="shanghai";
+    console.log(oPerson.oAddress.province);//beijing
+    console.log(oNew.oAddress.province);//shanghai
+</pre>
+<script>
+    function a(xx) {
+        this.x=xx;
+        return this;
+    }
+    var x=a(5);
+    //运行后
+    // x = window; window.x = window; y = undefined;
+    var y=a(6);
+    //运行后
+    // x = 6;   y = window;  window.x = 6;
+    console.log(x.x);//undefined
+    console.log(y.x);//6
+    //相当于执行了
+    // console.log((6).x);    // undefined
+    // console.log(window.x); // 6
+
+    function Foo() {
+        getName = function(){
+            console.log(1);
+        };
+        return this;
+    }
+    Foo.getName = function () {  //Foo的属性，不是Foo的方法,Foo的getName属性指向一个匿名函数
+        console.log(2);
+    };
+    Foo.prototype.getName = function () {   //这才是定义Foo的方法
+        // console.log('baidu' && 'google');
+        console.log(3);
+    };
+    var getName = function () {
+        console.log(4);
+    };
+    function getName() {
+        console.log(5);
+    }
+    Foo.getName(); //2
+    getName();  //4
+    Foo().getName(); //1
+    getName();  //1
+    new Foo.getName();  //2  相当于 new (Foo.getName()); 先执行了Foo.getName()再new   [通过new 来返回一个Foo.getName的实例,即构造函数是Foo.getName]
+    new Foo().getName();  //3 相当于 (new Foo()).getName();  先创建实例再调用实例的getName()
+    new new Foo().getName(); //3 相当于 new ((new Foo()).getName());
+    //优先级 new Foo() > Foo() > new Foo
+
+
+    //深度克隆
+    function deepClone(obj){
+        var result,oClass=isClass(obj);
+        //确定result的类型
+        if(oClass==="Object"){
+            result={};
+        }else if(oClass==="Array"){
+            result=[];
+        }else{
+            return obj;
+        }
+        for(key in obj){
+            var copy=obj[key];
+            if(isClass(copy)=="Object"){
+                result[key]=arguments.callee(copy);//递归调用
+            }else if(isClass(copy)=="Array"){
+                result[key]=arguments.callee(copy);
+            }else{
+                result[key]=obj[key];
+            }
+        }
+        return result;
+    }
+    //返回传递给他的任意对象的类
+    function isClass(o){
+        if(o===null) return "Null";
+        if(o===undefined) return "Undefined";
+        return Object.prototype.toString.call(o).slice(8,-1);
+    }
+    var oPerson={
+        oName:"rookiebob",
+        oAge:"18",
+        oAddress:{
+            province:"beijing"
+        },
+        ofavorite:[
+            "swimming",
+            {reading:"history book"}
+        ],
+        skill:function(){
+            console.log("bob is coding");
+        }
+    };
+    //深度克隆一个对象
+    var oNew=deepClone(oPerson);
+
+    oNew.ofavorite[1].reading="picture";
+    console.log(oNew.ofavorite[1].reading);//picture
+    console.log(oPerson.ofavorite[1].reading);//history book
+
+    oNew.oAddress.province="shanghai";
+    console.log(oPerson.oAddress.province);//beijing
+    console.log(oNew.oAddress.province);//shanghai
+</script>
+</body>
+</html>

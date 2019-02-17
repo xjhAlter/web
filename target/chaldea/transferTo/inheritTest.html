@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>继承</title>
+    <script src="../js/lib/jquery_3.3.1_jquery.js"></script>
+</head>
+<body>
+<input type="text" name="age" size=3 onChange="validate(this, 18, 99);">
+<script>
+    function l ( arg ) {
+        console.log( arg );
+    }
+
+    //工厂模式：因为使用用一个接口创建很多对象会产生大量的重复代码,为了解决这个问题，人们就开始使用工厂模式：
+    function Person(hairs,face, eye) {
+        var o = new Object();
+        o.hairs = hairs;
+        o.face = face;
+        o.eye = eye;
+        o.say = function(){
+            console.log("say someting to me!");
+        };
+        return o;
+    }
+    console.log(Person(10,10,10));
+
+    //构造函数模式  需要new
+    function Person2(hairs, face, eye) {
+        this.hairs = hairs;
+        this.face = face;
+        this.eye = eye;
+    }
+    console.log(new Person2(10,10,10));
+
+    function P3(){
+        this.p = 100;
+        this.test = function () {
+            alert("this is P3");
+        }
+    }
+
+    function P4() {
+        P3.call(this);
+        var pri = 4;  //私有变量，不能通过实例名.pri访问
+    }
+
+    P4.prototype = Object.create(P3.prototype);
+    // P4.prototype = P3.prototype;//错误写法
+    P4.prototype.constructor = P4;
+
+
+    // P4.prototype = new P3();
+
+    var pp = new P4();
+    l(pp);
+    pp.p = 200;
+    // pp.test();
+    // alert(pp.pri);
+    var ppp = new P3();
+    l(ppp);
+    l(pp.p);
+    l(pp.constructor);
+    l(pp.constructor.prototype);  //constructor是实例的，prototype是构造函数的
+    l(pp.__proto__);  //返回该对象的原型，与pp.constructor.prototype相同
+    l(P4.prototype); //与pp.constructor.prototype相同
+    l(P4.prototype.constructor); //与pp.constructor相同
+    // l(pp.constructor);
+    // P4.prototype.constructor = P4;//将P4的构造函数指向P4
+    // l(pp.constructor);
+
+    function validate(obj, lowval, hival){
+        if ((obj.value < lowval) || (obj.value > hival))
+            console.log('Invalid Value!');
+    }
+
+    var r = /x/g;  //正则表达式
+    var s = '_x_x'; //需要检测的字符串
+
+    // r.lastIndex // 0
+    l(r.test(s)); // true
+
+    // r.lastIndex // 2
+    l(r.test(s));// true
+
+    // r.lastIndex // 4
+    l(r.test(s));
+
+    l("hello world".match(/(\w+)\s(\w+)/));
+    // l('hello world'.replace(/(\w+)\s(\w+)/, '$2 $1'));
+
+
+    function Animal(name){
+        this.name=name;
+        this.showName=function(){
+            console.log(this.name);
+        }
+    }
+    function Dog(name){
+        Animal.call(this,name);
+    }
+    var dog=new Dog("Crazy dog");
+    l(dog.constructor); //构造函数是Dog
+    l(Dog.prototype); //原型是Object
+    Dog.prototype = Object.create(Animal.prototype);
+    Dog.prototype.constructor = Dog;
+    l(dog.constructor); //构造函数是Dog
+    l(Dog.prototype); //原型是Animal 构造函数是Dog
+
+    l(Object.create(Animal.prototype)); //Animal对象
+    l(Object.create(Animal));  //Function 对象
+    l(Object.create(Dog.prototype)); //Dog 对象
+    l(Object.create(Dog));  //Function 对象
+    l(Object.create(Object.prototype));  //{}
+    l(Object.create(Object));  // Function 对象
+    l(Object.create(dog));  // Dog 对象
+
+    Dog.prototype.constructor = P3;
+    l(Object.create(Dog.prototype)); //P3 对象 修改构造函数，是以对应的构造函数来创建实例的
+    l(Object.create(dog));  // Dog 对象
+
+</script>
+</body>
+</html>

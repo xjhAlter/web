@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <style>
+        .nothing {
+            color: #d2322d;
+        }
+        .toggle {
+            color: #181b8f;
+        }
+        .list {
+            list-style-type: none;
+        }
+        .highlight {
+            color: #fff;
+            background: #ff341e;
+        }
+        .answer {
+            display: none;
+        }
+        .animate {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border: 1px solid #0050d0;
+            background: #5bc0de;
+            cursor: pointer;
+        }
+    </style>
+    <script src="../js/lib/jquery_3.3.1_jquery.js"></script>
+</head>
+<body>
+<h1 id="search">欢迎回来，***</h1>
+<p><a href="../images/index.jpg" class="tooltip" title="alter">the title test</a></p>
+<p class="nothing">点击变色</p>
+<h1 class="question">问题</h1>
+<p class="answer">答案</p>
+<ul class="list">
+    <li>1</li>
+    <li>2</li>
+</ul>
+<div class="animate"></div>
+<input type="button" id="sub1" value="sub1">
+<input type="button" id="sub2" value="sub2">
+<script>
+    $(function () {
+
+        var testName = window.location.search; //从?开始
+        testName = testName.substring(1, testName.length);
+        var search = testName.split("&")[0].split("=")[1];  //获取第一组数据的值
+        // search = encodeURI(encodeURI(search));
+        //中文乱码，需要改一下
+        $("#search").text("欢迎回来，" + search);
+
+        var string = "0123456789";
+
+        document.getElementById("sub1").onclick = function () {
+           alert(string.substring(2));
+        };
+
+        document.getElementById("sub2").onclick = function () {
+           alert(string.substring(2,8));
+        };
+
+        $(".question").bind("mouseover",function () {
+            $(this).addClass("highlight");
+            $(this).next("p.answer").show(1000);
+        });
+        $(".question").bind("mouseout",function () {
+            $(this).removeClass("highlight");
+            $(this).next("p.answer").hide(1000);
+        });
+        $(".animate").click(function () {
+           $(this).animate({left: "500px"}, 3000);
+        });
+    });
+    $("li").click(function () {
+        // $(this).attr("style","color:#ff341e");
+        $(this).text($(this).text()+"+1");
+        $(this).css("color","blue");
+    });
+    $(".nothing").click(function () {
+        $(this).toggleClass("toggle");
+    });
+    $("a.tooltip").mouseover(function (e) {
+       // var tooltip = "<div id='tooltip'>"+this.title+"</div>";
+        var tooltip = "<div id='tooltip'><img src='"+this.href+"'/></div>";
+       $("body").append(tooltip);
+       $("#tooltip").css({
+           "top": e.pageY + "px",
+           "left": e.pageX + "px"
+       }).show("fast");
+    }).mouseout(function () {
+        $("#tooltip").remove();
+    });
+</script>
+</body>
+</html>

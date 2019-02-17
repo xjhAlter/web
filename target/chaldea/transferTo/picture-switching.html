@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片切换</title>
+    <script type="text/javascript" src="../js/lib/jquery_3.3.1_jquery.js"></script>
+    <style>
+
+        ul, ol {
+            list-style: none;
+        }
+
+        .picslide {
+            position: relative;
+        }
+
+        .slide {
+            /*这里用的是图片的宽度和高度*/
+            width: 300px;
+            height: 424px;
+            overflow: hidden;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0;
+            border: 10px solid #b5fffe;
+            margin:0;
+        }
+        .slide-ul {
+            position: relative;
+            width: 2000px;
+            padding:0;
+            margin:0;
+        }
+        .slide-ul li {
+            display: inline;
+            float: left;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .info-btn {
+            width: 150px;
+            height: 30px;
+            overflow: hidden;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 0;
+            margin: 5px;
+        }
+        .info-btn li {
+            display: inline;
+            float: left;
+            width: 20px;
+            height: 20px;
+            margin: 5px;
+            border-radius: 50%;
+            background-color: #b9deff;
+        }
+        .info-btn li:hover, .info-btn li.active {
+            background-color: #548eff;
+        }
+    </style>
+</head>
+<body>
+<div class="picslide">
+    <!--切换图片-->
+    <div class="slide">
+        <ul class="slide-ul" id="slide-picture">
+            <li>
+                <img  src="../images/servant/175A.png" title="初始状态" alt="尼禄(caster)-初始状态"/>
+            </li>
+            <li>
+                <img src="../images/servant/175B.png" title="灵基突破Ⅰ" alt="尼禄(caster)-灵基突破Ⅰ"/>
+            </li>
+            <li>
+                <img src="../images/servant/175C.png" title="灵基突破Ⅲ" alt="尼禄(caster)-灵基突破Ⅲ"/>
+            </li>
+            <li>
+                <img src="../images/servant/175D.png" title="灵基突破Ⅳ" alt="尼禄(caster)-灵基突破Ⅳ"/>
+            </li>
+            <li>
+                <img src="../images/servant/175E.png" title="愚人节" alt="尼禄(caster)-愚人节"/>
+            </li>
+        </ul>
+    </div>
+
+    <!--slide 切换按钮-->
+    <ul class="info-btn" id="slide-btn">
+        <li class="active"></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+</div>
+<script>
+    $(document).ready(function () {
+
+        var picture_pos = 0;
+        var picture_width = $("#slide-picture li img").width();
+
+        function execAnimate() {
+            //计算需要移动的长度
+            var moveLen = picture_pos * picture_width;
+            //停止当前动画并清空动画序列，开始新动画
+            $("#slide-picture").stop(true).animate({
+                left: "-" + moveLen + "px"
+            }, 600);
+        }
+
+        $("#slide-btn > li").hover(function() {
+            //获取li的下标
+            picture_pos = $(this).index();
+            //当前li添加active类，其他li清除该类
+            $(this).addClass("active").siblings("li.active").removeClass("active");
+            //执行动画
+            execAnimate();
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>h5</title>
+    <style>
+        #demo{
+            font-size: 30px;
+        }
+        #demo::selection{
+            color: red;
+        }
+        #email:invalid{
+            border: 1px solid red;
+        }
+        .radius{
+            /*width: 200px;*/
+            /*height: 100px;*/
+            /*background-color: red;*/
+            /*border-radius: 100px 100px 0 0;*/
+            width: 0;
+            height: 0;
+            border-top: 100px solid red;
+            border-right: 100px solid transparent;
+        }
+        .border-x{
+            width:100px;
+            height:100px;
+            background:yellow;
+            border-top: 20px solid red;
+            border-right:20px solid black;
+            border-bottom:20px solid green;
+            border-left:20px solid blue;
+        }
+    </style>
+</head>
+<body>
+<!--页面头部-->
+<header>
+    <nav></nav>
+</header>
+
+<!--主题区块-->
+<article>
+    <!--内容区块-->
+    <section>
+        <div class="radius"></div>
+        <div class="border-x"></div>
+        <p>xxxxx</p>
+        <p id="demo">xxxxxxxxxx</p>
+        <button onclick="getLocation()">地理位置</button>
+        <input type="email" required id="email">
+    </section>
+</article>
+
+<!--侧边栏-->
+<aside>
+</aside>
+
+<!--页面尾部-->
+<footer>
+    <!--地址信息-->
+    <address></address>
+</footer>
+<script>
+    var x = document.getElementById("demo");
+    function getLocation() {
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(showPosition,showError);
+            console.log(1)
+        }else{
+            x.innerHTML="不支持";
+            console.log(2)
+        }
+    }
+
+    function showPosition(position) {
+        x.innerHTML="维度：" + position.coords.latitude + "</br>经度："+position.coords.longitude +
+        "</br>海拔：" + position.coords.altitude;
+        console.log(3)
+    }
+
+    function showError(error) {
+        switch(error.code){
+            case error.PERMISSION_DENIED:console.log(4);break;
+            case error.POSITION_UNAVAILABLE:console.log(5);break;
+            case error.TIMEOUT:console.log(6);break;
+            case error.UNKNOWN_ERROR:console.log(7);break;
+
+        }
+    }
+</script>
+</body>
+</html>

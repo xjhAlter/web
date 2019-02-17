@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>图片选项卡</title>
+    <!--与bootstrap不兼容，bootstrap使用的是IE盒子模型，需修改div的宽高-->
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <script type="text/javascript" src="../js/lib/jquery_3.3.1_jquery.js"></script>
+    <style>
+
+        ul, ol {
+            list-style: none;
+        }
+
+        #tab-list{
+            /*图片宽度+div左右padding+div左右border*/
+            width: 324px;
+            margin: 20px auto;
+        }
+        #tab-list div{
+            /*图片的原宽度,原高度,与bootstrap不兼容*/
+            /*width:300px*/
+            /*height:424px*/
+
+            /*下面的宽高与bootstrap兼容 原宽度 + 两边padding + 两边border + （两边margin？应该不用）*/
+            width: 324px;
+            height: 446px;
+            padding: 10px;
+            background-color: #b9deff;
+            border: 2px solid #548eff;
+            border-top: none;
+        }
+        #tab-ul{
+            border-bottom: 2px solid #548eff;
+            /*非bootstrap*/
+            /*height:32px*/
+            height: 34px;
+            margin:0;
+            padding:0;
+        }
+        #tab-ul li{
+            display: inline-block;
+            font-size: 14px;
+            width: 58px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #999;
+            border-bottom: none;
+            margin:0;
+            padding:0;
+            background-color: #fff;
+        }
+        #tab-ul li:hover{
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #b9deff;
+            cursor: pointer;
+        }
+        #tab-ul li.active{
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #b9deff;
+            border: 2px solid #548eff;
+            border-bottom: 2px solid #b9deff;
+        }
+        .show{
+            display: block;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="tab-list">
+    <ul id="tab-ul">
+        <li class="active">初始</li>
+        <li>再临Ⅰ</li>
+        <li>再临Ⅲ</li>
+        <li>再临Ⅳ</li>
+        <li>愚人节</li>
+    </ul>
+    <div >
+        <img  src="../images/servant/175A.png" title="初始状态" alt="尼禄(caster)-初始状态"/>
+    </div>
+    <div style="display: none;">
+        <img src="../images/servant/175B.png" title="灵基再临Ⅰ" alt="尼禄(caster)-灵基再临Ⅰ"/>
+    </div>
+    <div style="display: none;">
+        <img src="../images/servant/175C.png" title="灵基再临Ⅲ" alt="尼禄(caster)-灵基再临Ⅲ"/>
+    </div>
+    <div style="display: none;">
+        <img src="../images/servant/175D.png" title="灵基再临Ⅳ" alt="尼禄(caster)-灵基再临Ⅳ"/>
+    </div>
+    <div style="display: none;">
+        <img src="../images/servant/175E.png" title="愚人节" alt="尼禄(caster)-愚人节"/>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        //选项卡
+        //注释掉的是直接修改行内样式
+        // $("#tab-list div").eq(0).show().siblings("div").hide();
+        $("#tab-ul li").each(function (i) {
+            $(this).click(function () {
+                $("#tab-list li").eq(i).addClass("active").siblings("li").removeClass("active");
+                $("#tab-list div").hide();
+                $("#tab-list div").eq(i).show();
+                // $("#tab-list div").eq(i).removeClass("hide").addClass("show").siblings("div").removeClass("show").addClass("hide");
+                // $("#tab-list div").eq(i).show().siblings("div").hide();
+            })
+        });
+        //选项卡-end
+
+        //DOM操作 需要给div加上hide与show的类
+        /*var oUl1 = document.getElementById("tab-ul");
+        var aLi = oUl1.getElementsByTagName("li");
+        var oDiv = document.getElementById("tab-list");
+        var aDiv = oDiv.getElementsByTagName("div");
+        for(var i = 0; i < aLi.length; i++) {
+            aLi[i].index = i;
+            aLi[i].onclick = function() {
+                for(var i = 0; i < aLi.length; i++) {
+                    aLi[i].className = "";
+                }
+                this.className = "active";
+                for(var j = 0; j < aDiv.length; j++) {
+                    aDiv[j].className = "hide";
+                }
+                aDiv[this.index].className = "show";
+            }
+        }*/
+    });
+</script>
+</body>
+</html>

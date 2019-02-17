@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>迦勒底学习部</title>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/study.css" rel="stylesheet">
+</head>
+<div class="container">
+    <h1><strong>迦勒底学习部</strong></h1>
+
+    <!-- substring() -->
+    <div class="question-group">
+        <div class="question-icon">?</div>
+        <div class="question"><strong>substring()</strong></div>
+    </div>
+    <div class="answer-none">
+        <div class="answer-group">
+            <div class="answer-icon">A</div>
+            <div class="answer">
+                <p class="known">var string = "0123456789";</p>
+                <button id="btn1-1" class="btn btn-info">substring(2);</button>
+                <!--从6到7-->
+                <button id="btn1-2" class="btn btn-info">substring(6,8);</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- var,const,let的区别 -->
+    <div class="question-group">
+        <div class="question-icon">?</div>
+        <div class="question"><strong>var,const,let的区别</strong></div>
+    </div>
+    <div class="answer-none">
+        <div class="answer-group">
+            <div class="answer-icon">A</div>
+            <div class="answer">
+                <p class="explain">var定义的变量可以修改，如果不初始化会输出undefined，不会报错。可以跨块访问, 不能跨函数访问。</p>
+                <p class="explain">const定义的变量不可以修改，而且必须初始化。只能在块作用域里访问</p>
+                <p class="explain">let是块级作用域，函数内部使用let定义后，对函数外部无影响。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- typeof -->
+    <div class="question-group">
+        <div class="question-icon">?</div>
+        <div class="question"><strong>typeof</strong></div>
+    </div>
+    <div class="answer-none">
+        <div class="answer-group">
+            <div class="answer-icon">A</div>
+            <div class="answer">
+                <p class="explain">typeof 运算符把类型信息当作<strong>字符串</strong>返回。</p>
+                <p class="explain">返回值有六种可能:"number","string","boolean","object","function"和"undefined".</p>
+                <p class="explain">对于Array,Null等特殊对象使用typeof一律返回object，这正是typeof的局限性。</p>
+                <button id="btn3-1" class="btn btn-info">typeof(123)</button>
+                <button id="btn3-2" class="btn btn-info">typeof "123"</button>
+                <button id="btn3-3" class="btn btn-info">typeof NaN</button>
+                <button id="btn3-4" class="btn btn-info">typeof null</button>
+                <button id="btn3-5" class="btn btn-info">typeof String('123')</button>
+                <button id="btn3-6" class="btn btn-info">typeof new String("123")</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 广义表的head与tail -->
+    <div class="question-group">
+        <div class="question-icon">?</div>
+        <div class="question"><strong>广义表的head与tail</strong></div>
+    </div>
+    <div class="answer-none">
+        <div class="answer-group">
+            <div class="answer-icon">A</div>
+            <div class="answer">
+                <p class="explain">广义表最基本的操作：取表头head(LS)与取表尾tail(LS)</p>
+                <p class="explain">例：</p>
+                <pre class="pre-scrollable">
+                    LS=(a,(b,c,d))
+                    head(LS)=a
+                    tail(LS)=((b,c,d))
+                    head(tail(LS))=(b,c,d)
+                    tail(tail(LS))=()
+                    head(head(tail(LS)))=b
+                    tail(head(tail(LS)))=(c,d)
+                    head(tail(head(tail(LS))))=c
+                    tail(tail(head(tail(LS))))=(d)
+                    head(tail(tail(head(tail(LS)))))=d
+                    tail(tail(tail(head(tail(LS)))))=()
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <!-- Java的基本数据类型 -->
+    <div class="question-group">
+        <div class="question-icon">?</div>
+        <div class="question"><strong>Java的基本数据类型</strong></div>
+    </div>
+    <div class="answer-none">
+        <div class="answer-group">
+            <div class="answer-icon">A</div>
+            <div class="answer">
+                <p class="explain">1个字节： byte,  boolean(1个或4个，具体看虚拟机)</p>
+                <p class="explain">2个字节： short, char</p>
+                <p class="explain">4个字节： int,   float</p>
+                <p class="explain">8个字节： long,  double</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="../js/lib/jquery_3.3.1_jquery.js"></script>
+<script src="../js/study.js"></script>
+</body>
+</html>

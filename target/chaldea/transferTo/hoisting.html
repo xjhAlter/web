@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>变量提升</title>
+</head>
+<body>
+<script>
+    var fnx;
+    function foo() {
+        var a = 2;
+        function baz() {
+            console.log( a );
+        }
+        fnx = baz;
+    }
+    function bar() {
+        fnx();
+    }
+
+    foo();
+    bar(); // 2
+
+    function out(){
+        var a = 1;
+        return function () {
+            console.log(a);
+        }
+    }
+    var fnn = out();
+    fnn();
+
+
+   //上面是闭包
+
+    console.log(x);  //undefined
+    var x=1;
+    // console.log(cx);  //报错，cx is not defined
+
+    var b = function () {
+        console.log("hello");
+    };
+    function b() {
+        console.log("world");
+    }
+    b();//hello
+
+    //上面的相当于
+    // function b(){   //与var b的声明顺序无关，函数声明会优于变量声明并覆盖变量声明
+    //     console.log("world");
+    // }
+    // var b;
+    // b = function () {   //函数与变量使用同一个标识符b，这里b被重新赋值了
+    //     console.log("hello");
+    // };
+    // b();
+
+    var fn;   //无论fn的顺序如何，结果都是function
+    console.log(typeof fn);  //function 如果函数名和变量名相同，函数声明就能覆盖变量声明
+    function fn() {};
+    fn = 1;
+    console.log(typeof fn);  //number 这里fn被重新赋值为数字1
+
+
+    (function () {
+    console.log(a); //function(){console.log(2);}
+    a(); //2
+    var a = function () {
+        console.log(1);
+    };
+    function a() {
+        console.log(2);
+    }
+    console.log(a);//function(){console.log(1);}
+    a();//1
+    var c = d = a;  //d没有用var声明，所以是一个全局变量，c则是一个局部变量
+    }());
+    console.log(d);//function(){console.log(1);}
+    //console.log(c);//报错 c is not defined
+
+    //实际上是这样的
+    // (function () {
+    //     function a() {
+    //         console.log(2);
+    //     }
+    //     var a;
+    //     console.log(a);
+    //     a();
+    //     a = function () {
+    //         console.log(1);
+    //     };
+    //     console.log(a);
+    //     a();
+    //     d = a;
+    //     var c = d;
+    // }());
+    // console.log(d);
+    // console.log(c);
+
+
+
+    var funB,funC;
+    (function () {
+        var a = 1;
+        (function () {
+            funB = function () {
+                a = a + 1;
+                console.log(a);
+            }
+        }(a));
+        (function (a) {
+            funC = function () {
+                a = a + 1;
+                console.log(a);
+            }
+        }(a));
+    }());
+    funB();
+    funC();  //输出结果全是2 另外也没有改变作用域链上a的值。
+
+
+    //利用闭包，让循环输出的结果依次为1， 2， 3， 4， 5
+    // function timer(arg){
+    //     return function () {
+    //         console.log(arg);
+    //     }
+    // }
+    for (var i=1; i<=5; i++) {
+        // setTimeout(timer(i), i*1000 );
+        (function(i) {
+            setTimeout( function timer() {
+                console.log(i);
+            }, i*1000 );
+        })(i)
+    }
+
+    // for (let i = 0; i < 3; i++) {
+    //     let i = 'abc';
+    //     console.log(i);
+    // }
+</script>
+</body>
+</html>

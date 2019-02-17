@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>项目一</title>
+    <style>
+        .clearfloat{
+            clear: both;
+        }
+        header{
+            width: 100%;
+            height: 98px;
+            background: #f0f0f0;
+        }
+        header .center{
+            width: 100%;
+            margin: 0 auto;
+        }
+        .logo{
+            width: 300px;
+            height: 98px;
+            background: lightblue url("../images/Chaldea-small.png") no-repeat;
+            float: left;
+        }
+        .option{
+            width: 300px;
+            height: 22px;
+            float: right;
+            text-align: center;
+            margin-right: 50px;
+            margin-top: 15px;
+            background: #9FC112;
+        }
+        .option a{
+            padding: 0 10px;
+            line-height: 22px;
+        }
+        .option a:link,.option a:visited{
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .xian{
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .nav{
+            width: 100%;
+            padding: 0;
+        }
+        .nav .center{
+            margin: 0 auto;
+            width: 1200px;
+            height: 50px;
+            padding-top: 5px;
+        }
+        .nav ul{
+            width: 1200px;
+            height: 70px;
+            padding: 0;
+        }
+        .nav ul li {
+            width: 150px;
+            height: 49px;
+            float: left;
+            list-style-type: none;
+            font-size: 18px;
+            text-align: center;
+        }
+        .nav ul li a{
+            display: block;
+            font-weight: bold;
+            color: #999;
+        }
+        .nav .active a, .nav ul li a:hover{
+            color: #009;
+            background: white;
+        }
+
+        .banner {
+            width: 100%;
+            height: 400px;
+            text-align: center;
+            overflow: hidden;
+            /*background: url("../images/background.jpg")  no-repeat;*/
+        }
+        .cont{
+            margin: 0 auto;
+            width: 1200px;
+            height: 200px;
+        }
+        .left{
+            float: left;
+            width: 400px;
+        }
+        .left h3{
+            border-bottom: 1px solid #333;
+            height: 20px;
+            line-height: 20px;
+            margin: 10px 20px;
+            color: blue;
+            font-size: 14px;
+        }
+        .left h3 a{
+            color: #6b8dc1;
+        }
+        .left h3 span{
+            color: #666;
+            padding-left: 10px;
+        }
+        .left .div-img{
+            width: 132px;
+            float: left;
+        }
+        .left .div-img img{
+            width: 132px;
+            height: 144px;
+            padding: 2px;
+            border: 1px solid #ccc;
+        }
+        .left ul{
+            width: 200px;
+            float: left;
+            margin-left: 10px;
+            padding: 0;
+            list-style-type: none;
+        }
+        .left ul li{
+            height: 30px;
+            line-height: 30px;
+            overflow: hidden;
+        }
+        .left ul li a:hover{
+            color: #f00;
+        }
+        footer{
+            margin: 0 auto;
+            width: 700px;
+            height: 100px;
+            padding: 10px 0 0;
+        }
+        footer img{
+            float: left;
+        }
+        footer .copyright{
+            float: left;
+        }
+        footer .copyright{
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="center">
+        <div class="logo"></div>
+        <div class="option">
+            <a href="#">集团首页</a><span class="xian">|</span>
+            <a href="#">留言板</a><span class="xian">|</span>
+            <a href="#">加入收藏</a>
+        </div>
+    </div>
+</header>
+<div class="nav">
+    <div class="center">
+        <ul>
+            <li class="active">
+                <a href="#">
+                    <span class="font1">关于迦勒底</span>
+                    <br>
+                    <span class="foot2">ABOUT US</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="font1">企业文化</span>
+                    <br>
+                    <span class="foot2">CULTURE</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="font1">企业动态</span>
+                    <br>
+                    <span class="foot2">NEWS</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="font1">产品中心</span>
+                    <br>
+                    <span class="foot2">PRODUCTS</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="font1">工程实例</span>
+                    <br>
+                    <span class="foot2">PROJECTS</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="font1">旗下公司</span>
+                    <br>
+                    <span class="foot2">SUBORDINATE</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="font1">人才招聘</span>
+                    <br>
+                    <span class="foot2">RECRUITMENT</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="font1">联系我们</span>
+                    <br>
+                    <span class="foot2">CONTACT US</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="clearfloat"></div>
+<div class="banner">
+    <img src="../images/background.jpg">
+</div>
+<div class="cont">
+    <div class="left">
+        <h3><a href="#">企业动态<span id="font2">NEWS</span></a></h3>
+        <div class="div-img"><img src="../images/servant-small/Servant001.jpg"></div>
+        <ul>
+            <li><a href="#">迦勒底所长奥尔加玛丽莅临华山区</a></li>
+            <li><a href="#">里程二十年 感恩二十年——迦勒底</a></li>
+            <li><a href="#">创建花园式生产区 营造绿色迦勒底</a></li>
+            <li><a href="#">广州迦勒底有限公司荣获最佳公司</a></li>
+            <li><a href="#">藤丸立香为华南农业大学大学生作死</a></li>
+        </ul>
+    </div>
+</div>
+<div class="clearfloat"></div>
+<footer>
+    <img src="../images/Chaldea-small.png">
+    <div class="copyright">
+        <p>版权所有：广东迦勒底集团有限公司 粤 ICP 技术支持：
+            <a href="#">迦勒底网络</a><a href="#">后台管理</a>
+        </p>
+        <p>地址：广州市华南农业大学华山区学生宿舍16栋 &nbsp;电话：123456789</p>
+    </div>
+</footer>
+</body>
+</html>

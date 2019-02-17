@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>礼装</title>
+    <script src="js/lib/jquery_3.3.1_jquery.js"></script>
+    <script src="js/lib/vue.js"></script>
+    <style>
+        .mystic {
+            width: 100%;
+            height: 100%;
+            /*background-color: #005ceb;*/
+            text-align: center;
+        }
+
+        .card {
+            width: 20%;
+            margin: 0 auto 25px;
+            background-color: white;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .describe {
+            text-align: center;
+            padding: 10px 20px;
+        }
+
+        .mystic-img {
+            width: 90%;  /* 父元素的宽度*90% */
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .mystic-img:hover {
+            opacity: 0.7;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #fff;
+            background-color: #4CAF50;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+
+        .button:hover {
+            background-color: #3e8e41
+        }
+
+        .button:active {
+            background-color: #3e8e41;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        /* The Modal (background) */
+        .modal {
+            /*display: none; !* Hidden by default *!*/
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        }
+
+        /* Modal Content (image) */
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 40%;
+            max-width: 700px;
+        }
+
+        /* Add Animation */
+        .modal-content{
+            -webkit-animation-name: zoom;
+            -webkit-animation-duration: 0.6s;
+            animation-name: zoom;
+            animation-duration: 0.6s;
+        }
+
+        @-webkit-keyframes zoom {
+            from {-webkit-transform: scale(0)}
+            to {-webkit-transform: scale(1)}
+        }
+
+        @keyframes zoom {
+            from {transform: scale(0.1)}
+            to {transform: scale(1)}
+        }
+
+        /* The Close Button */
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 100% Image Width on Smaller Screens */
+        @media only screen and (max-width: 700px){
+            .modal-content {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="mystic">
+    <div class="card">
+        <img :src="getImages()" @click="getModal" class="mystic-img">
+        <div class="describe">
+            <p>概念摘出</p>
+        </div>
+    </div>
+    <button @click="toMystic" class="button">返回</button>
+    <!-- The Modal -->
+    <div v-show="showModal"  class="modal">
+        <span class="close" @click="closeModal">×</span>
+        <img class="modal-content" :src="getImages()">
+    </div>
+</div>
+<script>
+    var mystic = new Vue({
+        el:".mystic",
+        data:{
+            id:"",
+            path:"images/mystic/",
+            showModal:false
+        },
+        methods:{
+            getImages:function(){
+                return this.path + this.id + ".png";
+            },
+            toMystic:function () {
+                window.location.href="mystic.html";
+            },
+            getModal:function () {
+                this.showModal = true;
+            },
+            closeModal:function () {
+                this.showModal = false;
+            }
+        },
+        computed:{
+            // getImage:function(){
+            //     return this.path + this.id + ".png";
+            // }
+        },
+        created: function () {
+            this.id = location.search.split('=')[1];
+        }
+    });
+</script>
+</body>
+</html>

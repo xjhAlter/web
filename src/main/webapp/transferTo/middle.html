@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>居中</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .center1 {
+            width:100px;
+            height:100px;
+            background-color: #4cae4c;
+
+            /*水平垂直居中*/
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        .center2 {
+            width: 10px;
+            height: 10px;
+            background-color: #d2322d;
+
+            /*水平居中*/
+            margin: 0 auto;
+        }
+
+        .fatherfloat {
+            width: 200px;
+            height: 200px;
+            background-color: silver;
+
+            /*垂直居中*/
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .float {
+            width: 50px;
+            height: 50px;
+            background-color: #4f74ae;
+            float: left;
+
+            /*水平居中*/
+            margin-left: 50%;
+            position: relative;
+            left: -25px;
+        }
+
+        .father {
+            width: 200px;
+            height: 200px;
+            background-color: #b5dedb;
+            /*垂直居中*/
+            line-height: 200px;
+            /*水平居中*/
+            text-align: center;
+        }
+
+        .father div {
+            background-color: #06b7c8;
+            display: inline;
+        }
+
+        .ul-2 {
+            list-style: none;
+            width: 500px;
+            overflow: hidden;
+        }
+        .ul-2 li {
+            width: 200px;
+            background: #fffb9d;
+            height: 50px;
+            margin: 10px;
+            /* 重点 */
+            text-align: center;
+        }
+        /* 重点 */
+        p {
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="parent center1">
+    <div class="test center2"></div>
+</div>
+
+<!--浮动元素居中-->
+<div class="fatherfloat">
+    <!--也可以给float元素加一层div，并设置margin: 0 auto-->
+    <div class="float">
+    </div>
+</div>
+
+
+<!--不定宽的块状元素居中-->
+<div class="father">
+    <div>1</div>
+</div>
+
+<ul class="ul-2">
+    <li><p>一行文字居中</p></li>
+    <li><p>这里是比较长的两行文字,多行左对齐</p></li>
+</ul>
+</body>
+</html>

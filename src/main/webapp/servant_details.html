@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>英灵</title>
+    <script src="js/lib/jquery_3.3.1_jquery.js"></script>
+    <script src="js/lib/vue.js"></script>
+    <style>
+        .servant {
+             position: absolute;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%,-50%);
+             text-align: center;
+         }
+        ul,ol{
+            list-style-type: none;
+        }
+
+        button {
+            position: relative;
+            bottom: 10px;
+            margin: 5px auto;
+        }
+
+        #tab-list{
+            width: 330px;
+            margin: 20px auto;
+        }
+        #tab-list div{
+            /*tab-list div的宽度=tab-ul的宽度 - tab-list div的border *2 */
+            width: 326px;
+            height: 403px;
+            padding: 10px 0;
+            background-color: #b9deff;
+            border: 2px solid #548eff;
+            border-top: none;
+            text-align: center;
+        }
+        #tab-ul{
+            border-bottom: 2px solid #548eff;
+            width: 330px;
+            height: 32px;
+            margin:0;
+            padding:0;
+        }
+        #tab-ul li{
+            display: inline-block;
+            font-size: 14px;
+            width: 55px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #999;
+            border-bottom: none;
+            margin:0;
+            padding:0;
+            background-color: #fff;
+        }
+        #tab-ul li:hover{
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #b9deff;
+            cursor: pointer;
+        }
+        #tab-ul li.active{
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #b9deff;
+            border: 2px solid #548eff;
+            border-bottom: 2px solid #b9deff;
+        }
+        .show{
+            display: block;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="servant">
+    <div id="tab-list">
+        <ul id="tab-ul">
+            <li class="active">初始</li>
+            <li>再临Ⅰ</li>
+            <li>再临Ⅲ</li>
+            <li>再临Ⅳ</li>
+            <li>愚人节</li>
+        </ul>
+        <div>
+            <img :src="getImage('A')"><br>
+        </div>
+        <div class="hide">
+            <img :src="getImage('B')"><br>
+        </div>
+        <div class="hide">
+            <img :src="getImage('C')"><br>
+        </div>
+        <div class="hide">
+            <img :src="getImage('D')"><br>
+        </div>
+        <div class="hide">
+            <img :src="getImage('E')"><br>
+        </div>
+    </div>
+    <button @click="toServant">返回</button>
+</div>
+<script>
+    var servant = new Vue({
+        el:".servant",
+        data:{
+            id:"",
+            path:"images/servant/"
+        },
+        methods:{
+            getId:function () {
+                this.id = location.search.split('=')[1];
+            },
+            getImage:function(state){
+                return this.path + this.id + state + ".png";
+            },
+            toServant:function () {
+                window.location.href="servant.html";
+            }
+        },
+        computed:{
+        }
+    });
+    servant.id = location.search.split('=')[1];
+    // servant.getId();
+
+    $("#tab-ul li").each(function (i) {
+        $(this).click(function () {
+            $("#tab-list li").eq(i).addClass("active").siblings("li").removeClass("active");
+            $("#tab-list div").eq(i).removeClass("hide").addClass("show").siblings("div").removeClass("show").addClass("hide");
+        })
+    });
+
+</script>
+</body>
+</html>

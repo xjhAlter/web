@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>vue</title>
+    <script src="../js/lib/jquery_3.3.1_jquery.js"></script>
+    <script src="../js/lib/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+    <style>
+        ol,ul {
+            list-style-type: none;
+        }
+
+        .active {
+            background-color: blue;
+        }
+        .text-danger {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+<div id="studyVue">
+    <h1>{{title}}</h1>
+    <!--:class的值也可以改为"[activeClass, errorClass]"
+    data: {
+        activeClass: 'active',
+        errorClass: 'text-danger'
+    }
+    -->
+    <p :class="{ active: isActive, 'text-danger': hasError }">{{message}}</p>
+    <!--支持js表达式，但只能单个表达式-->
+    <p :style="styleObject">{{message.split('').reverse().join('')}}</p>
+    <p>{{returnMessage}}</p>
+    <input type="text" v-model.trim="message"/>
+    <!-- v-on 缩写 = @ -->
+    <button @click="reverseMessage" @keyup.enter="reverseMessage">逆转信息</button>
+    <!--<button v-on:click="reverseMessage">逆转消息</button>-->
+    <p>{{response}}</p>
+    <!--字符串长度大于0即为真-->
+    <p v-if="message">测试值为真</p>
+    <p v-else>没有哦</p>
+
+    <!--组件上使用v-model-->
+    <custom-input
+            v-model="message"
+    >插槽</custom-input>
+
+    <br>
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames }}</span>
+    <br>
+
+    <input type="radio" id="one" value="one" v-model="radioName">
+    <label for="one">one</label>
+    <input type="radio" id="two" value="two" v-model="radioName">
+    <label for="two">two</label>
+    <br>
+    <span>Radio name:{{radioName}}</span>
+    <br>
+
+    <!--多选则加上属性multiple 也可用option in options-->
+    <select v-model="selected">
+        <option disabled value="">请选择</option>
+        <option value="1">A</option>
+        <option value="2">B</option>
+        <option value="3">C</option>
+    </select>
+    <br>
+    <!--有value则显示value，没有则显示option的text-->
+    <span>selected:{{selected}}</span>
+
+
+    <ul>
+        <li v-for="todo in todos" :key="todo.id">
+            {{todo.text}}
+        </li>
+    </ul>
+    <ol>
+        <!--
+      现在我们为每个 todo-item 提供 todo 对象
+      todo 对象是变量，即其内容可以是动态的。
+      我们也需要为每个组件提供一个“key”，稍后再
+      作详细解释。
+    -->
+        <todo-item
+                v-for="item in comTestList"
+                v-bind:todo="item"
+                v-bind:key="item.id">
+        </todo-item>
+    </ol>
+</div>
+<script>
+    Vue.component('todo-item', {    //todo-item 与标签相同
+        // todo-item 组件现在接受一个
+        // "prop"，类似于一个自定义特性。
+        // 这个 prop 名为 todo。
+        props: ['todo'],  //与v-bind的todo绑定
+        template: '<li>{{ todo.text}}</li>'  //模块的模板
+    });
+
+    Vue.component('custom-input', {
+        props: ['value'],
+        template: "<input :value=\"value\" @input=\"$emit(\'input\', $event.target.value)\">"
+    });
+
+    var a = {b:1};
+
+    var app = new Vue({
+        el:'#studyVue',
+        data:{
+            title:"vue",
+            message:"Hello Vue",
+            response:"请输入信息",
+            isActive:false,
+            hasError:true,
+            styleObject:{
+                color:'green',
+                fontSize:'20px'
+            },
+            checkedNames: ["Mike"],
+            radioName:'one',
+            selected:'',
+            othera:a, //全局中的a,设置属性会影响原数据  app.b == a.b
+            todos:[
+                {text:"one"},
+                {text:"two"},
+                {text:"three"}
+            ],
+            comTestList:[
+                { id: 0, text: 'test1' },
+                { id: 1, text: 'test2' },
+                { id: 2, text: 'test3' }
+            ]
+        },
+        methods: {
+            reverseMessage: function () {
+                //this指向app实例
+                this.message = this.message.split('').reverse().join('');
+            },
+            getResponse: function () {
+                this.response = "你输入的字符串长度是..." + this.message.length + "!!!";
+            }
+        },
+        computed:{
+            // 计算属性的 getter 与 setter
+            returnMessage: {
+                get:function () {
+                    return this.message.substring(0,1);
+                },
+                set:function (newMessage) {
+                    this.message = newMessage;
+                }
+            }
+        },
+        watch: {  //侦听器
+            // 如果 `message` 发生改变，这个函数就会运行
+            message: function (newMessage, oldMessage) {
+                this.response = "正在输入...";
+                this.debouncedGetResponse();
+                // setTimeout(this.getResponse, 500);  //每次输入都执行一次，不行
+            }
+        },
+        created: function () {
+            // `_.debounce` 是一个通过 Lodash 限制操作频率的函数。
+            // 在这个例子中，我们希望限制访问 yesno.wtf/api 的频率
+            // AJAX 请求直到用户输入完毕才会发出。想要了解更多关于
+            // `_.debounce` 函数 (及其近亲 `_.throttle`) 的知识，
+            // 请参考：https://lodash.com/docs#debounce
+            this.debouncedGetResponse = _.debounce(this.getResponse, 500);  //需要导入相应文件
+        }
+    });
+
+    // app.$el === document.getElementById('studyVue') // => true
+</script>
+</body>
+</html>

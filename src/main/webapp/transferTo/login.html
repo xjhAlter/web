@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/login.css" rel="stylesheet">
+</head>
+<body>
+<div class="message warning">
+    <div class="inset">
+        <div class="login-head">
+            <h1>Login Form</h1>
+            <div class="alert-close"> </div>
+        </div>
+        <form>
+            <li>
+                <input type="text" class="text" value="Username" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Username';}"><a href="#" class=" icon user"></a>
+            </li>
+            <div class="clear"> </div>
+            <li>
+                <input type="password" value="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}"> <a href="#" class="icon lock"></a>
+            </li>
+            <div class="clear"> </div>
+            <div class="submit">
+                <input type="submit" onclick="myFunction()" value="Sign in" >
+                <h4><a href="#">Lost your Password ?</a></h4>
+                <div class="clear">  </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+</div>
+
+</body>
+</html>
